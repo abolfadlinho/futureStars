@@ -1,0 +1,85 @@
+FutureStars schema
+- tournaments
+tournamentId: AutoID
+name: string
+season: string
+champion: reference to clubs doc
+sport: string //ENUM (football, handball...)
+notes: string
+teamsType: string
+
+
+- stages
+stageId: AutoID
+tournamentId: reference to tournament doc
+tables: [{ name: string, table:[teamIds]}]
+group: boolean //false = knockouts
+pointSystem : {W: number, D: number, L: number}
+notes: string
+
+
+- clubs
+clubId: AutoID
+name: string
+logo: string
+city: string
+desc: string
+
+
+- teams
+teamId: AutoID
+clubId: reference to clubs
+sport: string //ENUM
+type: string
+playerIds: [playerId]
+rank: string
+
+
+- players
+playerId: AutoID
+name: string
+number: number
+dob: string
+
+
+- matches
+matchId: AutoID
+stageId: reference to stage doc
+teamAId: reference to team doc
+teamBId: reference to team doc
+date: string
+location: string
+finalScore: { A: number, B: number}
+motm: reference to player
+players: { A:[{playerId, points: number}], B: [{playerId, points: number}]}
+
+
+- posts
+postId: AutoID
+image: string
+title: string
+text: string
+author: string
+date: string
+
+
+Order of population
+1. posts
+2. players
+3. clubs
+4. teams: remember to reference club and player ids populated earlier
+5. tournaments: remember to reference clubs populated earlier
+6. stages: remember to reference tournamentId and teamIds populated earlier
+7. matches: remember to reference teamIds, playerIds and stageIds populated earlier
+
+Tabs
+Home
+Posts
+Settings
+
+Routes
+Player
+Match
+Team
+Club
+Tournament
